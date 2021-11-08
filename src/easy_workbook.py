@@ -8,6 +8,8 @@ import os.path
 import sys
 
 from openpyxl import Workbook
+from io import BytesIO
+
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment, PatternFill, Border, Side, Protection, Font, Fill, Color
 from openpyxl.styles.borders import Border, Side, BORDER_THIN, BORDER_THICK
@@ -165,7 +167,8 @@ class ExcelGenerator:
             from openpyxl.comments import Comment
             import openpyxl.utils
 
-            #print(obj.value, obj.typ)
+#            print(obj.value, obj.typ)
+
 
             # We tried making the comment string the description and the DCATv3 type is the comment "author", but that didn't work
             cell = ws.cell(row=1, column=col)
@@ -199,3 +202,10 @@ class ExcelGenerator:
 
     def save(self, fname):
         self.wb.save(fname)
+
+    def export(self):
+        virtual_file = BytesIO()
+        self.wb.save(virtual_file)
+        return virtual_file.getvalue()
+        
+
